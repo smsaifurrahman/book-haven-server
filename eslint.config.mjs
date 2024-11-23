@@ -17,7 +17,6 @@ export default [
     rules: {
       'no-unused-vars': 'error',
       'no-undef': 'error',
-      'no-console': 'warn',
     },
     languageOptions: {
       ecmaVersion: 2022,
