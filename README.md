@@ -27,7 +27,7 @@ Clone the repository:
 
 bash
 
-git clone https://github.com/your-username/book-shop-b4a2v1.git
+git clone https://github.com/smsaifurrahman/book-shop-backend.git
 Navigate into the project directory:
 
 bash
@@ -140,7 +140,7 @@ json
 }
 Response:
 json
-Copy code
+
 {
   "status": true,
   "message": "Order created successfully",
