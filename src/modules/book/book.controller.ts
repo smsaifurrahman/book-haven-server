@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { BookServices } from './book.service';
-import { any } from 'zod';
+import mongoose from 'mongoose';
 
 const createBook = async (req: Request, res: Response) => {
   try {
@@ -14,7 +14,7 @@ const createBook = async (req: Request, res: Response) => {
       message: 'Book created successfully',
       data: result,
     });
-  } catch (err: any) {
+  } catch (err) {
     res.status(500).json({
       success: false,
       message: err.message,
@@ -34,7 +34,7 @@ const getAllBooks = async (req: Request, res: Response) => {
       message: 'Books data retrieved Successfully',
       data: result,
     });
-  } catch (err: any) {
+  } catch (err) {
     res.status(500).json({
       success: false,
       message: err.message || 'Something went wrong',
@@ -46,12 +46,16 @@ const getAllBooks = async (req: Request, res: Response) => {
 const getSingleBook = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new Error('Invalid ID format | please provide a valid ObjectId ');
+    }
     const result = await BookServices.getSingleBookFromDB(id);
-    if(!result) {
-      res.status(400).json({
-        success: true,
-        message: 'Book is not found',
-        data: result,
+
+    if (!result) {
+      return res.status(404).json({
+        success: false,
+        message: 'Book not found',
       });
     }
 
@@ -72,13 +76,15 @@ const getSingleBook = async (req: Request, res: Response) => {
 const updateBook = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new Error('Invalid ID format | please provide a valid ObjectId ');
+    }
     const body = req.body;
     const result = await BookServices.updateBookFromDB(id, body);
-    console.log(result);
 
-    if(!result) {
-      res.status(400).json({
-        success: true,
+    if (!result) {
+      return res.status(404).json({
+        success: false,
         message: 'Book is not found',
         data: result,
       });
@@ -90,7 +96,6 @@ const updateBook = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (err: any) {
- 
     res.status(500).json({
       success: false,
       message: err.message || 'Something went wrong',
@@ -99,10 +104,22 @@ const updateBook = async (req: Request, res: Response) => {
   }
 };
 
-const deleteSingleBook = async (req: Request, res: Response)  => {
+const deleteSingleBook = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
-    await BookServices.deleteBookFromDB(id);
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new Error('Invalid ID format | please provide a valid ObjectId ');
+    }
+    const result = await BookServices.deleteBookFromDB(id);
+    console.log(result);
+
+    if (!result) {
+      return res.status(404).json({
+        success: false,
+        message: 'Book is not found',
+        data: result,
+      });
+    }
 
     res.status(200).json({
       status: true,

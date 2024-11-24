@@ -1,4 +1,4 @@
-
+import mongoose from 'mongoose';
 import { TBook } from './book.interface';
 import { Book } from './book.model';
 
@@ -30,27 +30,22 @@ const getSingleBookFromDB = async (id: string) => {
 };
 
 const updateBookFromDB = async (id: string, data: TBook) => {
-    const result = Book.findByIdAndUpdate(id, data,{
-        new: true, runValidators: true
-    });
-
-    // if (!result) {
-    //     throw new Error('Book not found'); // Throw an error if the book doesn't exist
-    //   }
-
-    return result;
-}
-
+  const result = Book.findByIdAndUpdate(id, data, {
+    new: true,
+    runValidators: true,
+  });
+  return result;
+};
 
 const deleteBookFromDB = async (id: string) => {
-    const result = await Book.findByIdAndDelete(id);
-    return result;
-  };
+  const result = await Book.findByIdAndDelete(id);
+  return result;
+};
 
 export const BookServices = {
   createBookIntoDB,
   getAllBooksFromDB,
   getSingleBookFromDB,
   deleteBookFromDB,
-  updateBookFromDB
+  updateBookFromDB,
 };

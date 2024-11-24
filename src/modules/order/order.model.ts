@@ -1,6 +1,5 @@
 import { Schema, model } from 'mongoose';
-import {  TOrder } from './order.interface';
-
+import { TOrder } from './order.interface';
 
 const orderSchema = new Schema<TOrder>(
   {
@@ -34,7 +33,7 @@ const orderSchema = new Schema<TOrder>(
   },
   {
     timestamps: true, // Automatically adds `createdAt` and `updatedAt`
-  }
+  },
 );
 
 export const Order = model<TOrder>('orders', orderSchema);
