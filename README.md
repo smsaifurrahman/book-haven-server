@@ -3,6 +3,8 @@
 **Overview**
 This is a Book Shop management application built with Express, TypeScript, and MongoDB using Mongoose. The application allows the management of books and orders in a book store. It supports basic CRUD (Create, Read, Update, Delete) operations for both products (books) and orders. The system is designed to handle data validation, error handling, and integration with MongoDB for storing and retrieving product and order data.
 
+**Live link**: https://book-shop-backend-eight.vercel.app
+
 **Features**
 Product (Book) Management: Allows adding, updating, fetching, and deleting books from the store.
 Order Management: Customers can place orders for books by specifying product ID, quantity, and email.
