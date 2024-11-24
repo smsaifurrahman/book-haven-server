@@ -21,6 +21,7 @@ const getRevenue = async (req: Request, res: Response) => {
       message: 'Revenue is retrieved successfully',
       data: { totalRevenue: revenue },
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     res.status(500).json({
       success: false,

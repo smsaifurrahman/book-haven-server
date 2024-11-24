@@ -17,6 +17,7 @@ const createOrder = async (req: Request, res: Response) => {
       message: 'Order is created successfully',
       data: result,
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     res.status(500).json({
       success: false,

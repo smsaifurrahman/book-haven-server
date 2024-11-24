@@ -14,12 +14,14 @@ const createBook = async (req: Request, res: Response) => {
       message: 'Book created successfully',
       data: result,
     });
-  } catch (err) {
+  } catch (err: unknown) {
+    // Type assertion to Error
+    const error = err as Error; // Assert that `err` is of type `Error`
     res.status(500).json({
       success: false,
-      message: err.message,
-      error: err,
-      stack: `Error: Something went wrong\n ${err.stack} `,
+      message: error.message || 'Something went wrong',
+      error: error,
+      stack: error.stack,
     });
   }
 };
@@ -37,38 +39,75 @@ const getAllBooks = async (req: Request, res: Response) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: err.message || 'Something went wrong',
+      message: 'Something went wrong',
       error: err,
     });
   }
 };
 
-const getSingleBook = async (req: Request, res: Response) => {
+//   try {
+//     const id = req.params.id;
+
+//     if (!mongoose.Types.ObjectId.isValid(id)) {
+//       throw new Error('Invalid ID format | please provide a valid ObjectId ');
+//     }
+//     const result = await BookServices.getSingleBookFromDB(id);
+
+//      // If no book is found, send a 404 response
+//      if (!result) {
+//       res.status(404).json({
+//         success: false,
+//         message: 'Book not found',
+//       });
+//       return; // Return after sending response to avoid further execution
+//     }
+
+//     res.status(200).json({
+//       success: true,
+//       message: 'Book is retrieved Successfully',
+//       data: result,
+//     });
+//       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+//   } catch (err: any) {
+//     res.status(500).json({
+//       success: false,
+//       message: err.message || 'Something went wrong',
+//       error: err,
+//     });
+//   }
+// };
+
+const getSingleBook = async (req: Request, res: Response): Promise<void> => {
   try {
     const id = req.params.id;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       throw new Error('Invalid ID format | please provide a valid ObjectId ');
     }
+
     const result = await BookServices.getSingleBookFromDB(id);
 
     if (!result) {
-      return res.status(404).json({
+      res.status(404).json({
         success: false,
         message: 'Book not found',
       });
+      return;
     }
 
     res.status(200).json({
       success: true,
-      message: 'Book is retrieved Successfully',
+      message: 'Book retrieved successfully',
       data: result,
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
+    // Type assertion to Error
+    const error = err as Error; // Assert that `err` is of type `Error`
     res.status(500).json({
       success: false,
-      message: err.message || 'Something went wrong',
-      error: err,
+      message: error.message || 'Something went wrong',
+      error: error,
+      stack: error.stack,
     });
   }
 };
@@ -82,12 +121,13 @@ const updateBook = async (req: Request, res: Response) => {
     const body = req.body;
     const result = await BookServices.updateBookFromDB(id, body);
 
+    // If no book is found, send a 404 response
     if (!result) {
-      return res.status(404).json({
+      res.status(404).json({
         success: false,
-        message: 'Book is not found',
-        data: result,
+        message: 'Book not found',
       });
+      return; // Return after sending response to avoid further execution
     }
 
     res.status(200).json({
@@ -95,11 +135,14 @@ const updateBook = async (req: Request, res: Response) => {
       message: 'Book is Updated Successfully',
       data: result,
     });
-  } catch (err: any) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: unknown) {
+    // Type assertion to Error
+    const error = err as Error; // Assert that `err` is of type `Error`
     res.status(500).json({
       success: false,
-      message: err.message || 'Something went wrong',
-      error: err,
+      message: error.message || 'Something went wrong',
+      error: error,
     });
   }
 };
@@ -113,12 +156,13 @@ const deleteSingleBook = async (req: Request, res: Response) => {
     const result = await BookServices.deleteBookFromDB(id);
     console.log(result);
 
+    // If no book is found, send a 404 response
     if (!result) {
-      return res.status(404).json({
+      res.status(404).json({
         success: false,
-        message: 'Book is not found',
-        data: result,
+        message: 'Book not found',
       });
+      return; // Return after sending response to avoid further execution
     }
 
     res.status(200).json({
@@ -126,11 +170,13 @@ const deleteSingleBook = async (req: Request, res: Response) => {
       message: 'Book is deleted Successfully',
       data: {},
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
+    // Type assertion to Error
+    const error = err as Error; // Assert that `err` is of type `Error`
     res.status(500).json({
       success: false,
-      message: err.message || 'Something went wrong',
-      error: err,
+      message: error.message || 'Something went wrong',
+      error: error,
     });
   }
 };

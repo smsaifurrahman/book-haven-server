@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 import { TBook } from './book.interface';
 import { Book } from './book.model';
 
@@ -9,6 +8,7 @@ const createBookIntoDB = async (bookData: TBook) => {
 };
 
 const getAllBooksFromDB = async (searchTerm: string | undefined) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const filter: any = {};
 
   if (searchTerm) {
