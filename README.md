@@ -1,13 +1,17 @@
-Book Shop 
-Overview
+**Book Shop Backend**
+
+**Overview**
 This is a Book Shop management application built with Express, TypeScript, and MongoDB using Mongoose. The application allows the management of books and orders in a book store. It supports basic CRUD (Create, Read, Update, Delete) operations for both products (books) and orders. The system is designed to handle data validation, error handling, and integration with MongoDB for storing and retrieving product and order data.
 
-Features
+**Features**
 Product (Book) Management: Allows adding, updating, fetching, and deleting books from the store.
 Order Management: Customers can place orders for books by specifying product ID, quantity, and email.
 Data Validation: Mongoose schema validation is used to ensure data integrity for both books and orders.
 Inventory Management: Tracks the quantity of each book available and whether it's in stock.
-Tech Stack
+Revenue dispaly: Provides total revenue from all orders combined
+
+
+**Tech Stack**
 Backend: Express, TypeScript
 Database: MongoDB (via Mongoose)
 Validation: Mongoose Schema Validation
@@ -16,28 +20,31 @@ Setup Instructions
 Prerequisites
 Node.js: Make sure you have Node.js installed.
 MongoDB: You will need an instance of MongoDB running locally or using a cloud service like MongoDB Atlas.
-Installation
+
+
+**Installation**
 Clone the repository:
 
 bash
-Copy code
+
 git clone https://github.com/your-username/book-shop-b4a2v1.git
 Navigate into the project directory:
 
 bash
-Copy code
+
 cd book-shop-backend
 Install the dependencies:
 
 bash
-Copy code
+
 npm install
 Set up environment variables for MongoDB connection:
 
 Create a .env file in the root of the project.
 Add your MongoDB URI to the .env file:
 arduino
-Copy code
+
+
 MONGODB_URI=mongodb://your_mongo_uri_here
 Start the application:
 
@@ -49,7 +56,7 @@ Available Endpoints
 URL: /products (POST)
 Body:
 json
-Copy code
+
 {
   "title": "The Great Gatsby",
   "author": "F. Scott Fitzgerald",
@@ -61,7 +68,7 @@ Copy code
 }
 Response:
 json
-Copy code
+
 {
   "status": true,
   "message": "Book created successfully",
@@ -82,7 +89,7 @@ Copy code
 URL: /products/:id (GET)
 Response:
 json
-Copy code
+
 {
   "success": true,
   "message": "Book is retrieved Successfully",
@@ -92,7 +99,7 @@ Copy code
 URL: /products/:id (PUT)
 Body:
 json
-Copy code
+
 {
   "title": "The Great Gatsby",
   "author": "F. Scott Fitzgerald",
@@ -114,7 +121,7 @@ Copy code
 URL: /products/:id (DELETE)
 Response:
 json
-Copy code
+
 {
   "status": true,
   "message": "Book is deleted Successfully",
@@ -124,7 +131,7 @@ Copy code
 URL: /orders (POST)
 Body:
 json
-Copy code
+
 {
   "email": "customer@example.com",
   "product": "ObjectId_of_book",
