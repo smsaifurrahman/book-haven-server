@@ -17,6 +17,7 @@ const bookValidationSchema = z.object({
     .int('Quantity must be an integer')
     .nonnegative('Quantity cannot be negative'), // Ensures non-negative integer
   inStock: z.boolean(), // Ensures boolean value
+  image: z.string()
 });
 
 export { bookValidationSchema };

@@ -4,7 +4,6 @@ import { UserServices } from './user.service';
 import catchAsync from '../../app/utils/catchAsync';
 import sendResponse from '../../app/utils/sendResponse';
 
-
 const createUser: RequestHandler = catchAsync(async (req, res) => {
   const userData = req.body;
 

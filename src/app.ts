@@ -1,10 +1,15 @@
 /** @format */
 
-import express, { Application, Request, Response } from 'express';
+import express, { application, Application, Request, Response } from 'express';
 import cors from 'cors';
 import { BookRoutes } from './modules/book/book.routes';
 import { OrderRoutes } from './modules/order/order.route';
-import { revenueRoute } from './modules/revenue/revenue.route';
+
+import { UserRoutes } from './modules/user/user.route';
+import globalErrorHandler from './app/middleware/globalErrorHandler';
+import notFound from './app/errors/notFound';
+import { AuthRoutes } from './modules/auth/auth.route';
+import router from './app/route';
 const app: Application = express();
 
 // parsers
@@ -12,9 +17,15 @@ app.use(express.json());
 app.use(cors());
 
 // Application routes
-app.use('/api', BookRoutes);
-app.use('/api', OrderRoutes);
-app.use('/api', revenueRoute);
+// app.use('/api', BookRoutes);
+// app.use('/api', OrderRoutes);
+// app.use('/api', UserRoutes);
+// app.use('/api', AuthRoutes);
+
+app.use('/api', router)
+
+app.use(globalErrorHandler);
+app.use(notFound);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello World!');

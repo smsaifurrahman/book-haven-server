@@ -6,9 +6,10 @@ import handleZodError from '../errors/handleZodError';
 import handleValidationError from '../errors/handleValidationError';
 import handleCastError from '../errors/handleCastError';
 import handleDuplicateError from '../errors/handleDuplicationError';
-import { TErrorSources } from '../interface/error';
+
 import AppError from '../errors/AppError';
 import handleTokenError from '../errors/handleTokenError';
+import { TErrorSources } from '../interface/error';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
@@ -62,6 +63,7 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
         message: err?.message,
       },
     ];
+    
   } else if (err instanceof Error) {
 
     message = err?.message;
