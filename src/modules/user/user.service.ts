@@ -15,6 +15,21 @@ const createUserIntoDB = async (payload: IUser) => {
   return newUser;
 };
 
+const getAllUsersFromDB =async() => {
+  const results = await User.find();
+  return results
+}
+
+
+const blockUserIntoDB = async (id: string) => {
+  const result = await User.findOneAndUpdate({ _id: id }, {isBlocked: true}, {
+    new: true,
+  });
+  return result;
+};
+
 export const UserServices = {
   createUserIntoDB,
+  getAllUsersFromDB,
+  blockUserIntoDB
 };

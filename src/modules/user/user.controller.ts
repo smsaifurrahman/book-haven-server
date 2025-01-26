@@ -1,3 +1,4 @@
+import httpStatus from 'http-status';
 import { RequestHandler } from 'express';
 
 import { UserServices } from './user.service';
@@ -21,6 +22,30 @@ const createUser: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const getAllUsers: RequestHandler = catchAsync(async (req, res) => {
+  const result = await UserServices.getAllUsersFromDB();
+
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: 'Users data retrieved successfully',
+    data: result,
+  });
+});
+
+const blockUser: RequestHandler = catchAsync(async (req, res) => {
+  const { userId } = req.params;
+  await UserServices.blockUserIntoDB(userId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User is blocked Successfully',
+  });
+});
+
 export const UserControllers = {
   createUser,
+  getAllUsers,
+  blockUser,
 };

@@ -12,4 +12,15 @@ router.post(
   UserControllers.createUser,
 );
 
+router.get(
+  '/get-all-users',
+  UserControllers.getAllUsers,
+);
+router.patch(
+  '/block-user/:userId',
+  UserControllers.blockUser,
+);
+
+
+
 export const UserRoutes = router;
