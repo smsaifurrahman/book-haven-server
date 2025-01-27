@@ -20,8 +20,8 @@ const createBook = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllBooks = catchAsync(async (req: Request, res: Response) => {
-  const searchTerm = req.query.searchTerm as string;
-  const result = await BookServices.getAllBooksFromDB(searchTerm);
+  const query = req.query;
+  const result = await BookServices.getAllBooksFromDB(query);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -65,7 +65,7 @@ const getAllBooks = catchAsync(async (req: Request, res: Response) => {
 
 const getSingleBook = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
-    const id = req.params.id;
+    const id = req.params.orderId;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       throw new Error('Invalid ID format | please provide a valid ObjectId ');

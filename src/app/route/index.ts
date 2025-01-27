@@ -12,7 +12,7 @@ const moduleRoutes = [
     route: BookRoutes,
   },
   {
-    path: '/orders',
+    path: '/order',
     route: OrderRoutes,
   },
   {
