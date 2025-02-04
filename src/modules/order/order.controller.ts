@@ -1,24 +1,35 @@
 import httpStatus from 'http-status';
 import { Request, Response } from 'express';
 import { OrderService } from './order.service';
-import mongoose from 'mongoose';
 import catchAsync from '../../app/utils/catchAsync';
 import sendResponse from '../../app/utils/sendResponse';
 
 const createOrder = catchAsync(async (req: Request, res: Response) => {
-  const orderData = req.body;
-  const productId = orderData.product;
-  if (!mongoose.Types.ObjectId.isValid(productId)) {
-    throw new Error('Invalid ID format | please provide a valid ObjectId ');
-  }
+  const user = req.user;
 
-  const result = await OrderService.createOrderIntoDB(orderData);
+  // const productId = orderData.product;
+  // if (!mongoose.Types.ObjectId.isValid(productId)) {
+  //   throw new Error('Invalid ID format | please provide a valid ObjectId ');
+  // }
+
+  const result = await OrderService.createOrderIntoDB(user, req.body, req.ip!);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Order is created successfully!',
     data: result,
+  });
+});
+
+const verifyPayment = catchAsync(async (req, res) => {
+  const order = await OrderService.verifyPayment(req.query.order_id as string);
+
+  sendResponse(res, {
+    statusCode: httpStatus.CREATED,
+    message: "Order verified successfully",
+    success: true,
+    data: order,
   });
 });
 
@@ -47,5 +58,6 @@ const getSingleOrder = catchAsync(async (req, res) => {
 export const OrderController = {
   createOrder,
   getAllOrders,
-  getSingleOrder
+  getSingleOrder,
+  verifyPayment
 };

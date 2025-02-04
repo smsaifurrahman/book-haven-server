@@ -27,6 +27,9 @@ const userSchema = new Schema<IUser>(
       enum: ['admin', 'user'],
       default: 'user',
     },
+    phone: { type: String, default: "N/A" },
+    address: { type: String, default: "N/A" },
+    city: { type: String, default: "N/A" },
     isBlocked: {
       type: Boolean,
       default: false,

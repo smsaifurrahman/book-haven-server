@@ -33,6 +33,10 @@ const bookSchema = new Schema<TBook>(
       type: Boolean,
       required: [true, 'Stock status is required'],
     },
+    imageUrl: {
+      type: String,
+    },
+    
   },
   {
     timestamps: true, // Automatically adds `createdAt` and `updatedAt`

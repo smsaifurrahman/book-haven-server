@@ -97,6 +97,7 @@ const updateBook = catchAsync(async (req: Request, res: Response) => {
   }
   const body = req.body;
   const result = await BookServices.updateBookFromDB(id, body);
+  console.log(body);
 
   // If no book is found, send a 404 response
   if (!result) {

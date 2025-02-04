@@ -12,7 +12,9 @@ const auth = (...requireRoles: TUserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
     const tokenBearer = req.headers.authorization;
+
     const token = tokenBearer?.split(' ')[1];
+
 
     // check if the token is sent from client
     if (!token) {
@@ -42,7 +44,8 @@ const auth = (...requireRoles: TUserRole[]) => {
     if (requireRoles && !requireRoles.includes(role)) {
       throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized');
     }
-    req.user = decoded as JwtPayload & { role: string };
+    // req.user = decoded as JwtPayload & { role: string };
+    req.user = user;
 
     next();
   });

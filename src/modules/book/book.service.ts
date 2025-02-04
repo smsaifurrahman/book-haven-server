@@ -11,8 +11,9 @@ type BookFilters = {
 type GetAllBooksParams = {
   searchTerm?: string;
   filters?: BookFilters;
+  page?: number;
+  limit?: number;
 };
-
 
 const createBookIntoDB = async (bookData: TBook) => {
   const result = await Book.create(bookData);
@@ -21,20 +22,9 @@ const createBookIntoDB = async (bookData: TBook) => {
 };
 
 const getAllBooksFromDB = async (query: GetAllBooksParams) => {
-  // searchTerm: string | undefined,
-  // filters: {
-  //   priceRange?: { min: number; max: number };
-  //   author?: string;
-  //   category?: string[];
-  //   inStock?: boolean;
-  // }
-
-  console.log('query', query);
-
   const filter: any = {}; // Initialize the filter object
 
   // Search term: Applies $or condition
-
   let searchTerm;
   if (query?.searchTerm) {
     searchTerm = query.searchTerm;
@@ -46,13 +36,9 @@ const getAllBooksFromDB = async (query: GetAllBooksParams) => {
   }
 
   // Price range: Applies $gte and $lte for price
-
   if (query?.filters?.priceRange) {
     const minRange = Number(query.filters.priceRange.min);
     const maxRange = Number(query.filters.priceRange.max);
-    console.log(minRange);
-    console.log(maxRange);
-
     filter.price = {
       $gte: minRange,
       $lte: maxRange,
@@ -74,9 +60,25 @@ const getAllBooksFromDB = async (query: GetAllBooksParams) => {
     filter.inStock = query.filters.inStock;
   }
 
-  // Execute the Mongoose query
-  const result = await Book.find(filter);
-  return result;
+  // Pagination
+  const page = query?.page || 1; // Default to page 1
+  const limit = query?.limit || 10; // Default to 10 items per page
+  const skip = (page - 1) * limit; // Calculate documents to skip
+
+  // Execute the Mongoose query with pagination
+  const result = await Book.find(filter).skip(skip).limit(limit);
+
+  // Total count for the filtered query
+  const totalCount = await Book.countDocuments(filter);
+
+  return {
+    data: result, // Paginated results
+    meta: {
+      totalCount, // Total number of documents matching the filter
+      totalPages: Math.ceil(totalCount / limit), // Total number of pages
+      currentPage: page,
+    },
+  };
 };
 
 const getSingleBookFromDB = async (id: string) => {
