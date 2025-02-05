@@ -11,9 +11,9 @@ import { User } from '../../modules/user/user.model';
 const auth = (...requireRoles: TUserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
-    const tokenBearer = req.headers.authorization;
+    const token = req.headers.authorization;
 
-    const token = tokenBearer?.split(' ')[1];
+    // const token = tokenBearer?.split(' ')[1];
 
 
     // check if the token is sent from client

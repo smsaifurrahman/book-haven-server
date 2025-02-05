@@ -20,6 +20,11 @@ const getAllUsersFromDB =async() => {
   return results
 }
 
+const getSingleUserFromDB = async(payload: IUser) => {
+  const results = await User.isUserExitsByEmail(payload.email);
+  return results;
+}
+
 
 const blockUserIntoDB = async (id: string) => {
   const result = await User.findOneAndUpdate({ _id: id }, {isBlocked: true}, {
@@ -31,5 +36,6 @@ const blockUserIntoDB = async (id: string) => {
 export const UserServices = {
   createUserIntoDB,
   getAllUsersFromDB,
-  blockUserIntoDB
+  blockUserIntoDB,
+  getSingleUserFromDB
 };

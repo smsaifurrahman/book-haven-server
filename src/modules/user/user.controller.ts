@@ -31,6 +31,17 @@ const getAllUsers: RequestHandler = catchAsync(async (req, res) => {
     message: 'Users data retrieved successfully',
     data: result,
   });
+})
+const getSingleUser: RequestHandler = catchAsync(async (req, res) => {
+  const user = req.user;
+  const result = await UserServices.getSingleUserFromDB(user);
+
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: 'User data retrieved successfully',
+    data: result,
+  });
 });
 
 const blockUser: RequestHandler = catchAsync(async (req, res) => {
@@ -48,4 +59,5 @@ export const UserControllers = {
   createUser,
   getAllUsers,
   blockUser,
+  getSingleUser
 };
