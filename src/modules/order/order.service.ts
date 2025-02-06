@@ -271,7 +271,9 @@ const getSingleOrderFromDB = async (id: string) => {
   return result;
 };
 const getMyOrdersFromDB = async (userId: string) => {
-  const result = await Order.find({ user: userId });
+  const result = await Order.find({ user: userId }).populate({
+    path: 'products.product', // Populate the 'product' field inside 'products' array
+  })
   return result;
 };
 

@@ -54,7 +54,6 @@ const getSingleOrder = catchAsync(async (req, res) => {
 });
 const getMyOrder = catchAsync(async (req, res) => {
   const id = req.params.user_id;
-  console.log('my order id', id);
   const result = await OrderService.getMyOrdersFromDB(id);
   sendResponse(res, {
     statusCode: httpStatus.OK,

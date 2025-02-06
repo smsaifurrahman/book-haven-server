@@ -5,14 +5,14 @@ const OrderSchema = new Schema<TOrder>(
   {
     user: {
       type: Schema.Types.ObjectId,
-      ref: 'Product',
+      ref: 'User',
       required: true,
     },
     products: [
       {
         product: {
           type: Schema.Types.ObjectId,
-          ref: 'Product',
+          ref: 'books',
           required: true,
         },
         quantity: {
