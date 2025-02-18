@@ -11,7 +11,13 @@ type BookFilters = {
 type GetAllBooksParams = {
   searchTerm?: string;
   filters?: BookFilters;
-  page?: number;
+  category?: string;
+  author?: string;
+  inStock?: boolean;
+  priceRange?: {
+    split?: any; min: number; max: number 
+};
+  page?: string;
   limit?: number;
 };
 
@@ -23,6 +29,7 @@ const createBookIntoDB = async (bookData: TBook) => {
 
 const getAllBooksFromDB = async (query: GetAllBooksParams) => {
   const filter: any = {}; // Initialize the filter object
+
 
   // Search term: Applies $or condition
   let searchTerm;
@@ -36,33 +43,51 @@ const getAllBooksFromDB = async (query: GetAllBooksParams) => {
   }
 
   // Price range: Applies $gte and $lte for price
-  if (query?.filters?.priceRange) {
-    const minRange = Number(query.filters.priceRange.min);
-    const maxRange = Number(query.filters.priceRange.max);
+  if (query?.priceRange) {
+    const priceRange = query.priceRange.split('-'); // Split the range like "0-100" into ["0", "100"]
+    console.log(priceRange);
+    let minRange = 0;
+    let maxRange = 0;
+
+    // Handle the different cases of price range:
+    if (priceRange.length === 2) {
+      minRange = Number(priceRange[0]);
+      maxRange = Number(priceRange[1]);
+      if (priceRange[0] === '300' && priceRange[1] === 'above') {
+        minRange = 300;
+
+        maxRange = 1000000; // If the range is "300-above", set max to a very high value
+      }
+    }
+
+    console.log(typeof minRange, minRange);
+    console.log(typeof maxRange, maxRange);
+
     filter.price = {
-      $gte: minRange,
-      $lte: maxRange,
+      $gte: minRange, // Greater than or equal to min range
+      $lte: maxRange, // Less than or equal to max range
     };
   }
 
   // Author: Case-insensitive match for author name
-  if (query?.filters?.author) {
-    filter.author = { $regex: query.filters.author, $options: 'i' };
+  if (query?.author) {
+    filter.author = { $regex: query.author, $options: 'i' };
   }
 
   // Category: Matches any category in the array
-  if (query?.filters?.category) {
-    filter.category = { $in: query.filters.category };
+  if (query?.category) {
+    filter.category = { $in: query.category };
   }
 
   // In stock: Boolean filter for availability
-  if (query?.filters?.inStock !== undefined) {
-    filter.inStock = query.filters.inStock;
+  if (query?.inStock !== undefined) {
+    filter.inStock = query.inStock;
   }
 
   // Pagination
-  const page = query?.page || 1; // Default to page 1
-  const limit = query?.limit || 10; // Default to 10 items per page
+  const page = Number( query?.page ) || 1; // Default to page 1
+  console.log('page', page);
+  const limit = query?.limit || 6; // Default to 10 items per page
   const skip = (page - 1) * limit; // Calculate documents to skip
 
   // Execute the Mongoose query with pagination

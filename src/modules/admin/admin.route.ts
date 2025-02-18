@@ -4,7 +4,7 @@ import { AdminController } from './admin.controller';
 
 
 const router = express.Router();
-router.patch('/block-user', auth('admin'), AdminController.blockUser);
+router.patch('/block-user/:userId', auth('admin'), AdminController.blockUser);
 
 
 export const AdminRoutes = router;

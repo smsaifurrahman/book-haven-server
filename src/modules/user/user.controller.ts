@@ -23,7 +23,8 @@ const createUser: RequestHandler = catchAsync(async (req, res) => {
 });
 
 const getAllUsers: RequestHandler = catchAsync(async (req, res) => {
-  const result = await UserServices.getAllUsersFromDB();
+  const query = req?.query;
+  const result = await UserServices.getAllUsersFromDB(query);
 
   sendResponse(res, {
     statusCode: 201,
@@ -31,7 +32,7 @@ const getAllUsers: RequestHandler = catchAsync(async (req, res) => {
     message: 'Users data retrieved successfully',
     data: result,
   });
-})
+});
 const getSingleUser: RequestHandler = catchAsync(async (req, res) => {
   const user = req.user;
   const result = await UserServices.getSingleUserFromDB(user);
@@ -54,10 +55,23 @@ const blockUser: RequestHandler = catchAsync(async (req, res) => {
     message: 'User is blocked Successfully',
   });
 });
+const updateUserInfo: RequestHandler = catchAsync(async (req, res) => {
+  const user = req.user;
+
+  const payload = req.body;
+  await UserServices.updateUserInfo(user?.email, payload);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User info is updated Successfully',
+  });
+});
 
 export const UserControllers = {
   createUser,
   getAllUsers,
   blockUser,
-  getSingleUser
+  getSingleUser,
+  updateUserInfo,
 };

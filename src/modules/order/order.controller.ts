@@ -34,11 +34,13 @@ const verifyPayment = catchAsync(async (req, res) => {
 });
 
 const getAllOrders = catchAsync(async (req, res) => {
-  const result = await OrderService.getAllOrdersFromDB();
+
+  const query = req.query;
+  const result = await OrderService.getAllOrdersFromDB(query);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Order is created successfully!',
+    message: 'Order data retrieved successfully!',
     data: result,
   });
 });

@@ -262,9 +262,26 @@ const verifyPayment = async (order_id: string) => {
 
 
 
-const getAllOrdersFromDB = async () => {
-  const result = await Order.find();
-  return result;
+const getAllOrdersFromDB = async (query: {page: string}) => {
+
+    // Pagination
+    const page = Number( query?.page ) || 1; // Default to page 1
+
+    const limit = 4; // Default to 10 items per page
+    const skip = (page - 1) * limit; // Calculate documents to skip
+  
+  const result = await Order.find().skip(skip).limit(limit).populate('user').populate({
+    path: 'products.product', // Populate the 'product' field inside 'products' array
+  });
+  const totalCount = await Order.countDocuments();
+  return {
+    data: result, // Paginated results
+    meta: {
+      totalCount, // Total number of documents matching the filter
+      totalPages: Math.ceil(totalCount / limit), // Total number of pages
+      currentPage: page,
+    },
+  };
 };
 const getSingleOrderFromDB = async (id: string) => {
   const result = await Order.findOne({ _id: id });

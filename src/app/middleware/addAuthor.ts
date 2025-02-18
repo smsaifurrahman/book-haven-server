@@ -1,8 +1,9 @@
-import { User } from './../modules/user/user.model';
+
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import catchAsync from '../utils/catchAsync';
 import config from '../config';
+import { User } from '../../modules/user/user.model';
 
 
 export const addAuthorInfo = () => {

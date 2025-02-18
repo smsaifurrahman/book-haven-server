@@ -23,9 +23,15 @@ router.get(
   auth(USER_ROLE.admin, USER_ROLE.user),
   UserControllers.getSingleUser,
 );
+
 router.patch(
   '/block-user/:userId',
   UserControllers.blockUser,
+);
+router.patch(
+  '/update',
+  auth(USER_ROLE.admin, USER_ROLE.user),
+  UserControllers.updateUserInfo,
 );
 
 

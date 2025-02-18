@@ -26,6 +26,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.8.2",
     "shurjopay": "^0.12.1",
+    "swiper": "^11.2.3",
     "zod": "^3.23.8"
   },
   "devDependencies": {

@@ -1,4 +1,4 @@
-import  httpStatus  from 'http-status';
+import httpStatus from 'http-status';
 
 import { User } from '../user/user.model';
 import { TLoginUser } from './auth.interface';
@@ -6,8 +6,6 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import AppError from '../../app/errors/AppError';
 import config from '../../app/config';
 import bcrypt from 'bcrypt';
-
-
 
 const loginUser = async (payLoad: TLoginUser) => {
   const user = await User.isUserExitsByEmail(payLoad.email);
@@ -26,6 +24,7 @@ const loginUser = async (payLoad: TLoginUser) => {
   const jwtPayload = {
     userEmail: user.email,
     role: user.role,
+    userName: user.name,
   };
 
   const accessToken = jwt.sign(jwtPayload, config.jwt_access_secret as string, {
@@ -39,19 +38,9 @@ const changePassword = async (
   userData: JwtPayload,
   payload: { oldPassword: string; newPassword: string },
 ) => {
-  // checking if the user is exist
-  const user = await User.isUserExitsByEmail(userData.userEmail);
-
-  console.log(payload.newPassword);
-
-  if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
-  }
   // checking if the user is already deleted
-  if (!(await User.isPasswordMatched(payload.oldPassword, user?.password)))
+  if (!(await User.isPasswordMatched(payload.oldPassword, userData?.password)))
     throw new AppError(httpStatus.FORBIDDEN, 'Password do not matched');
-
-
 
   //hash new password
   const newHashedPassword = await bcrypt.hash(
@@ -61,7 +50,7 @@ const changePassword = async (
 
   await User.findOneAndUpdate(
     {
-      email: userData.userEmail,
+      email: userData.email,
       role: userData.role,
     },
     {
@@ -76,6 +65,5 @@ const changePassword = async (
 
 export const AuthServices = {
   loginUser,
-  changePassword
-  
+  changePassword,
 };

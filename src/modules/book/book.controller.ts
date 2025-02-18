@@ -65,7 +65,7 @@ const getAllBooks = catchAsync(async (req: Request, res: Response) => {
 
 const getSingleBook = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
-    const id = req.params.orderId;
+    const id = req.params.id;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       throw new Error('Invalid ID format | please provide a valid ObjectId ');
