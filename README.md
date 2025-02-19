@@ -40,7 +40,7 @@ This project provides the backend API for a Book Shop application. It handles da
 
 ## Installation
 
-1. Clone the repository: `git clone https://github.com/your-username/book-shop-backend.git`
+1. Clone the repository: `[git clone https://github.com/your-username/book-shop-backend.git](https://github.com/smsaifurrahman/book-haven-server.git)`
 2. Navigate to the project directory: `cd book-shop-backend`
 3. Install dependencies: `npm install` or `yarn install`
 4. Configure environment variables: Create a `.env` file in the root directory and add the necessary environment variables (e.g., database connection string, JWT secret key, SurjoPay credentials). Example:
